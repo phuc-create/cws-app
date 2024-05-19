@@ -5,10 +5,99 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+  schemas   = ["public"]
+}
+
+model profile_tbl {
+  id       String @id @default(uuid())
+  userID   String @unique
+  name     String
+  imageUrl String @db.Text
+
+  servers server_tbl[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  members  member_tbl[]
+  channels channel_tbl[]
+
+  @@schema("public")
+}
+
+model server_tbl {
+  id         String      @id @default(uuid())
+  name       String
+  imageUrl   String      @db.Text
+  inviteCode String      @db.Text
+  profileID  String
+  profile    profile_tbl @relation(fields: [profileID], references: [id], onDelete: Cascade)
+
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  members   member_tbl[]
+  channels  channel_tbl[]
+
+  @@index([profileID])
+  @@schema("public")
+}
+
+enum MEMBER_ROLE {
+  ADMIN
+  MODERATOR
+  GUEST
+
+  @@schema("public")
+}
+
+model member_tbl {
+  id        String      @id @default(uuid())
+  role      MEMBER_ROLE @default(GUEST)
+  profileID String
+  profile   profile_tbl @relation(fields: [profileID], references: [id], onDelete: Cascade)
+
+  serverID String
+  server   server_tbl @relation(fields: [serverID], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([profileID])
+  @@index([serverID])
+  @@schema("public")
+}
+
+enum CHANNEL_TYPE {
+  TEXT
+  AUDIO
+  VIDEO
+
+  @@schema("public")
+}
+
+model channel_tbl {
+  id   String       @id @default(uuid())
+  name String
+  type CHANNEL_TYPE @default(TEXT)
+
+  profileID String
+  profile   profile_tbl @relation(fields: [profileID], references: [id], onDelete: Cascade)
+
+  serverID String
+  server   server_tbl @relation(fields: [serverID], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([profileID])
+  @@index([serverID])
+  @@schema("public")
 }
