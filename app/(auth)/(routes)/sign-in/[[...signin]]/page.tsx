@@ -1,7 +1,7 @@
 import { SignIn } from "@clerk/nextjs"
 
 const SingInPage = () => {
-  return <SignIn />
+  return <SignIn routing="hash" />
 }
 
 export default SingInPage
