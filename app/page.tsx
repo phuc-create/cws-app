@@ -4,7 +4,7 @@ import { ModeToggle } from "../components/mode-toggle"
 import { initialProfile } from "../lib/initial-profile"
 import { db } from "../lib/db"
 import { redirect } from "next/navigation"
-import InitialModal from "../components/modals/initial-modal"
+import CreateServerModal from "../components/modals/create-server-modal"
 
 export default async function Home() {
   const profile = await initialProfile()
@@ -24,7 +24,7 @@ export default async function Home() {
 
   return (
     <main>
-      <InitialModal />
+      <CreateServerModal />
       {/* hello chat with sam project
       <UserButton afterSignOutUrl="/sign-in" />
       <ModeToggle />

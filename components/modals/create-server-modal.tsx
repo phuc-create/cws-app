@@ -12,13 +12,17 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import FileUpload from '../file-upload'
 
-const InitialModal = () => {
+import axios from 'axios'
+import { useRouter } from 'next/navigation'
+
+const CreateServerModal = () => {
   const [mouted, setMouted] = useState(false)
+  const router = useRouter()
   useEffect(() => {
     setMouted(true)
   }, [])
@@ -37,6 +41,15 @@ const InitialModal = () => {
   const isLoading = form.formState.isLoading
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log(values)
+    try {
+      await axios.post("/api/servers", values)
+
+      form.reset()
+      router.refresh()
+      window.location.reload()
+    } catch (error) {
+      console.log(error)
+    }
   }
   if (!mouted) return null
   return (
@@ -73,17 +86,9 @@ const InitialModal = () => {
               )} />
 
               <FormField control={form.control} name="imageURL" render={({ field }) => (
-                <FormItem>
-                  <Label htmlFor="image" className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                    Image
-                  </Label>
-                  <FormControl>
-                    <Input
-                      type='file'
-                      id="image"
-                      className="col-span-3 bg-zinc-300/50 border-0 focus-visible:ring-0 text-black:important focus-visible:ring-offset-0"
-                      {...field}
-                    />
+                <FormItem className='flex item-center justify-center'>
+                  <FormControl className='cursor-pointer'>
+                    <FileUpload endpoint='serverImage' value={field.value} onChange={field.onChange} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -102,4 +107,4 @@ const InitialModal = () => {
   )
 }
 
-export default InitialModal
+export default CreateServerModal
