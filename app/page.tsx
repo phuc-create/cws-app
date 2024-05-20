@@ -1,15 +1,34 @@
-import Image from "next/image"
 import { Button } from "../components/ui/button"
 import { UserButton } from "@clerk/nextjs"
 import { ModeToggle } from "../components/mode-toggle"
+import { initialProfile } from "../lib/initial-profile"
+import { db } from "../lib/db"
+import { redirect } from "next/navigation"
+import InitialModal from "../components/modals/initial-modal"
 
-export default function Home() {
+export default async function Home() {
+  const profile = await initialProfile()
+  const server = await db.server_tbl.findFirst({
+    where: {
+      members: {
+        some: {
+          profileID: profile.id
+        }
+      }
+    }
+  })
+
+  if (server) {
+    return redirect(`/servers/${server.id}`)
+  }
+
   return (
     <main>
-      hello chat with sam project
+      <InitialModal />
+      {/* hello chat with sam project
       <UserButton afterSignOutUrl="/sign-in" />
       <ModeToggle />
-      <Button>Hello</Button>
+      <Button>Hello</Button> */}
     </main>
   )
 }

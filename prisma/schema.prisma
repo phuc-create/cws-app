@@ -20,6 +20,7 @@ model profile_tbl {
   id       String @id @default(uuid())
   userID   String @unique
   name     String
+  email    String
   imageUrl String @db.Text
 
   servers server_tbl[]
