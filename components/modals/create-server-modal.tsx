@@ -19,8 +19,10 @@ import FileUpload from '../file-upload'
 
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
+import { useModal } from '../../hooks/use-modal-store'
 
 const CreateServerModal = () => {
+  const { isOpen, onOpen, onClose, type } = useModal()
   const [mouted, setMouted] = useState(false)
   const router = useRouter()
   useEffect(() => {
@@ -46,22 +48,27 @@ const CreateServerModal = () => {
 
       form.reset()
       router.refresh()
-      window.location.reload()
+      onClose()
     } catch (error) {
       console.log(error)
     }
   }
+
+  const handleClose = () => {
+    form.reset()
+    onClose()
+  }
   if (!mouted) return null
   return (
-    <Dialog open>
+    <Dialog open={isOpen && type === "create-server"} onOpenChange={handleClose}>
       {/* <DialogTrigger asChild>
         <Button variant="outline">Welcome to chat with Sam</Button>
       </DialogTrigger> */}
       <DialogContent className="sm:max-w-[425px] bg-white text-black">
         <DialogHeader>
-          <DialogTitle>Create a new server</DialogTitle>
-          <DialogDescription>
-            Make changes to your profile here. Click save when you`re done.
+          <DialogTitle className='text-left'>Create a new server</DialogTitle>
+          <DialogDescription className='text-left'>
+            Build on your own server group chat
           </DialogDescription>
         </DialogHeader>
         <Form {...form} >

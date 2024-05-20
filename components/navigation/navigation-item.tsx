@@ -20,7 +20,7 @@ const NavigationItem: React.FC<NavigationItemProps> = ({ id, name, imageURL }) =
   return (
     <div>
       <ActionTooltip side='right' align='center' label={name}>
-        <button onClick={handleChangeServer} className='relative group flex items-center'>
+        <button onClick={handleChangeServer} className='relative group flex items-center mb-4'>
           <div className={cn("absolute left-0 bg-primary rounded-r-full transition-all w-[4px]",
             params?.serverID !== id && "group-hover:h-[20px]",
             params?.serverID === id ? "h-[36px]" : "h-[8px]"
@@ -28,7 +28,7 @@ const NavigationItem: React.FC<NavigationItemProps> = ({ id, name, imageURL }) =
           <div className={cn("relative group flex mx-3 h-[48px] w-[48px] rounded-[24px] group-hover:rounded-[16px] transition-all overflow-hidden",
             params?.serverID === id && "bg-primary/10 text-primary rounded-[16px]"
           )}>
-            <Image fill src={imageURL} alt='Server Channel' />
+            <Image fill src={imageURL} alt='Server Channel' className='object-cover' />
           </div>
         </button>
       </ActionTooltip>
