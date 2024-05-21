@@ -1,9 +1,10 @@
 import { server_tbl } from '@prisma/client'
 import { create } from 'zustand'
+import { ServerWithMemberWithProfile } from '../types'
 
-export type ModalType = "create-server" | "update-server" | "invite" | null
+export type ModalType = "create-server" | "create-channel" | "members" | "update-server" | "invite" | null
 interface ModalData {
-  server?: server_tbl
+  server?: ServerWithMemberWithProfile
 }
 export type ModalStore = {
   type: ModalType,

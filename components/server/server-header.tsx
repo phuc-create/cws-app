@@ -35,19 +35,25 @@ const ServerHeader: React.FC<ServerHeaderProps> = ({
           </DropdownMenuItem>
         )}
         {isAdmin && (
-          <DropdownMenuItem className='text-emerald-600 dark:text-emerald-400 px-3 py-2 text-sm cursor-pointer'>
+          <DropdownMenuItem
+            onClick={() => onOpen("update-server", { server })}
+            className='text-emerald-600 dark:text-emerald-400 px-3 py-2 text-sm cursor-pointer'>
             Server Settings
             <Settings className='w-4 h-4 ml-auto' />
           </DropdownMenuItem>
         )}
         {isAdmin && (
-          <DropdownMenuItem className='text-emerald-600 dark:text-emerald-400 px-3 py-2 text-sm cursor-pointer'>
+          <DropdownMenuItem
+            onClick={() => onOpen("members", { server })}
+            className='text-emerald-600 dark:text-emerald-400 px-3 py-2 text-sm cursor-pointer'>
             Manage Members
             <Users className='w-4 h-4 ml-auto' />
           </DropdownMenuItem>
         )}
         {isModerator && (
-          <DropdownMenuItem className='text-emerald-600 dark:text-emerald-400 px-3 py-2 text-sm cursor-pointer'>
+          <DropdownMenuItem
+            onClick={() => onOpen("create-channel")}
+            className='text-emerald-600 dark:text-emerald-400 px-3 py-2 text-sm cursor-pointer'>
             Create Channel
             <PlusCircle className='w-4 h-4 ml-auto' />
           </DropdownMenuItem>

@@ -38,7 +38,7 @@ model server_tbl {
   id         String      @id @default(uuid())
   name       String
   imageUrl   String      @db.Text
-  inviteCode String      @db.Text
+  inviteCode String      @unique
   profileID  String
   profile    profile_tbl @relation(fields: [profileID], references: [id], onDelete: Cascade)
 
