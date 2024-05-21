@@ -48,7 +48,7 @@ const ServerSidebar: React.FC<ServerSidebarProps> = async ({ serverID }) => {
   const members = server.members.filter(mb => mb.profileID !== profile.id)
   const role = server.members.find(mb => mb.profileID === profile.id)?.role
   return (
-    <div className='flex flex-col text-primary w-full bg-emerald-100 dark:bg-[#2B2D31]'>
+    <div className='flex flex-col text-primary w-full'>
       <ServerHeader server={server} role={role} />
     </div>
   )
