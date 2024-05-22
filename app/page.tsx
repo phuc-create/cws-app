@@ -5,6 +5,7 @@ import { initialProfile } from "../lib/initial-profile"
 import { db } from "../lib/db"
 import { redirect } from "next/navigation"
 import CreateServerModal from "../components/modals/create-server-modal"
+import OpenCreateServer from "./_components/open-create-server"
 
 export default async function Home() {
   const profile = await initialProfile()
@@ -24,6 +25,7 @@ export default async function Home() {
 
   return (
     <main>
+      <OpenCreateServer />
       <CreateServerModal />
       {/* hello chat with sam project
       <UserButton afterSignOutUrl="/sign-in" />
