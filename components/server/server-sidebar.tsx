@@ -10,6 +10,7 @@ import ServerSearch from './server-search'
 import { Hash, Mic, ShieldAlert, ShieldCheck, Video } from 'lucide-react'
 import { Separator } from '../ui/separator'
 import ServerSection from './server-section'
+import ServerChannel from './server-channel'
 
 interface ServerSidebarProps {
   serverID: string
@@ -106,7 +107,28 @@ const ServerSidebar: React.FC<ServerSidebarProps> = async ({ serverID }) => {
         <Separator className='bg-zinc-200 dark:bg-zinc-700 rounded my-2' />
         {!!textChannels.length && (
           <div className='mb-2'>
-            <ServerSection />
+            <ServerSection
+              sectionType='channel'
+              channelType={CHANNEL_TYPE.TEXT}
+              role={role}
+              label='Text channels'
+            />
+            {textChannels.map(channel => (
+              <ServerChannel key={channel.id} role={role} channel={channel} server={server} />
+            ))}
+          </div>
+        )}
+        {!!audioChannels.length && (
+          <div className='mb-2'>
+            <ServerSection
+              sectionType='channel'
+              channelType={CHANNEL_TYPE.AUDIO}
+              role={role}
+              label='Audio channels'
+            />
+            {audioChannels.map(channel => (
+              <ServerChannel key={channel.id} role={role} channel={channel} server={server} />
+            ))}
           </div>
         )}
       </ScrollArea>
