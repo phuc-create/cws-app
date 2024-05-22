@@ -1,19 +1,35 @@
-"use client"
+'use client'
 import { CHANNEL_TYPE, MEMBER_ROLE } from '@prisma/client'
-import { Hash, Mic, SearchIcon, ShieldAlert, ShieldCheck, Video } from 'lucide-react'
+import {
+  Hash,
+  Mic,
+  SearchIcon,
+  ShieldAlert,
+  ShieldCheck,
+  Video
+} from 'lucide-react'
 import React, { useState } from 'react'
-import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '../ui/command'
+import {
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList
+} from '../ui/command'
 import { useParams, useRouter } from 'next/navigation'
 
 interface ServerSearchProps {
   data: {
-    label?: string,
-    type: "channel" | "member",
-    data: {
+    label?: string
+    type: 'channel' | 'member'
+    data:
+    | {
       id: string
-      icon: React.ReactNode,
-      name: string,
-    }[] | undefined
+      icon: React.ReactNode
+      name: string
+    }[]
+    | undefined
   }[]
 }
 
@@ -24,21 +40,27 @@ const ServerSearch: React.FC<ServerSearchProps> = ({ data }) => {
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
         e.preventDefault()
-        setOpen((open) => !open)
+        setOpen(open => !open)
       }
     }
 
-    document.addEventListener("keydown", down)
-    return () => document.removeEventListener("keydown", down)
+    document.addEventListener('keydown', down)
+    return () => document.removeEventListener('keydown', down)
   }, [])
 
-  const onMoveToConversations = ({ id, type }: { id: string, type: "channel" | "member" }) => {
-    if (type === "channel") {
+  const onMoveToConversations = ({
+    id,
+    type
+  }: {
+    id: string
+    type: 'channel' | 'member'
+  }) => {
+    if (type === 'channel') {
       return router.push(`/servers/${params.serverID}/channels/${id}`)
     }
-    if (type === "member") {
+    if (type === 'member') {
       return router.push(`/servers/${params.serverID}/conversations/${id}`)
     }
   }
@@ -46,30 +68,32 @@ const ServerSearch: React.FC<ServerSearchProps> = ({ data }) => {
     <>
       <button
         onClick={() => setOpen(true)}
-        className='group px-2 py-2 rounded-md flex items-center gap-x-2 w-full hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition'>
-        <SearchIcon className='w-4 h-4 text-zinc-500 dark:text-zinc-400' />
-        <p className='font-semibold text-sm text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition'>
+        className="group flex w-full items-center gap-x-2 rounded-md px-2 py-2 transition hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50"
+      >
+        <SearchIcon className="h-4 w-4 text-zinc-500 dark:text-zinc-400" />
+        <p className="text-sm font-semibold text-zinc-500 transition group-hover:text-zinc-600 dark:text-zinc-400 dark:group-hover:text-zinc-300">
           Search
         </p>
-        <kbd className='pointer-events-none inline-flex select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground ml-auto'>
-          <span className='text-sm'>⌘ </span> K
+        <kbd className="pointer-events-none ml-auto inline-flex select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
+          <span className="text-sm">⌘ </span> K
         </kbd>
       </button>
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder='Search all channels and members' />
+        <CommandInput placeholder="Search all channels and members" />
         <CommandList>
-          <CommandEmpty>
-            No result.
-          </CommandEmpty>
+          <CommandEmpty>No result.</CommandEmpty>
           {data.map(({ label, type, data }) => {
             if (!data?.length) return null
             return (
               <CommandGroup key={label} heading={label}>
                 {data.map(({ id, icon, name }) => {
                   return (
-                    <CommandItem key={id} onClick={() => onMoveToConversations({ id, type })}>
+                    <CommandItem
+                      key={id}
+                      onClick={() => onMoveToConversations({ id, type })}
+                    >
                       {icon}
-                      <span className='mr-2'>{name}</span>
+                      <span className="mr-2">{name}</span>
                     </CommandItem>
                   )
                 })}
