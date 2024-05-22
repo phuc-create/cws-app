@@ -6,6 +6,7 @@ import { db } from "../lib/db"
 import { redirect } from "next/navigation"
 import CreateServerModal from "../components/modals/create-server-modal"
 import OpenCreateServer from "./_components/open-create-server"
+import NavigationSidebar from "../components/navigation/navigation-sidebar"
 
 export default async function Home() {
   const profile = await initialProfile()
@@ -24,13 +25,15 @@ export default async function Home() {
   }
 
   return (
-    <main>
-      <OpenCreateServer />
-      <CreateServerModal />
-      {/* hello chat with sam project
-      <UserButton afterSignOutUrl="/sign-in" />
-      <ModeToggle />
-      <Button>Hello</Button> */}
-    </main>
+    <div className="h-full">
+      <div className="hidden md:flex h-full w-[72px] z-30 flex-col fixed inset-y-0">
+        <NavigationSidebar />
+      </div>
+      <main className="md:pl-[72px] h-full">
+
+        <OpenCreateServer />
+        <CreateServerModal />
+      </main>
+    </div>
   )
 }

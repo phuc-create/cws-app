@@ -143,7 +143,7 @@ const MembersModal = () => {
           })}
         </ScrollArea>
         <div className='p-6'>
-          members
+          {/* members */}
         </div>
       </DialogContent>
     </Dialog>

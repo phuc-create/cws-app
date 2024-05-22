@@ -27,4 +27,27 @@ export const PATCH = async (req: Request, { params }: { params: { serverID: stri
     console.log("[UPDATE SERVER ERROR]: ", error)
     return new NextResponse("Internal Server Error: " + error, { status: 500 })
   }
+}
+
+export const DELETE = async (req: Request, { params }: { params: { serverID: string } }) => {
+  try {
+
+    const profile = await currentProfile()
+    if (!profile) {
+      return new NextResponse("Unauthroized", { status: 401 })
+    }
+    if (!params.serverID) {
+      return new NextResponse("Missing Server ID", { status: 400 })
+    }
+    const server = await db.server_tbl.delete({
+      where: {
+        id: params.serverID,
+        profileID: profile.id
+      }
+    })
+    return NextResponse.json(server)
+  } catch (error) {
+    console.log("[DELETE SERVER ERROR]: ", error)
+    return new NextResponse("Internal Server Error: " + error, { status: 500 })
+  }
 } 
