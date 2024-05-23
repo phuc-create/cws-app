@@ -23,9 +23,8 @@ import * as z from 'zod'
 
 import { CHANNEL_TYPE } from '@prisma/client'
 import axios from 'axios'
-import { useParams, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import qs from 'query-string'
-import { useEffect, useState } from 'react'
 import { useModal } from '../../hooks/use-modal-store'
 import {
   Select,
@@ -34,13 +33,12 @@ import {
   SelectTrigger,
   SelectValue
 } from '../ui/select'
+import { useEffect } from 'react'
 
-const CreateChannelModal = () => {
+const UpdateChannelModal = () => {
   const { isOpen, onClose, type, data } = useModal()
-  const [loading, setLoading] = useState(false)
-  const { channelType } = data
+  const { channel, server } = data
   const router = useRouter()
-  const params = useParams()
 
   const formSchema = z.object({
     name: z
@@ -55,35 +53,33 @@ const CreateChannelModal = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
-      type: channelType || CHANNEL_TYPE.TEXT
+      type: channel?.type || CHANNEL_TYPE.TEXT
     }
   })
 
   useEffect(() => {
-    if (channelType) {
-      form.setValue('type', channelType)
+    if (channel) {
+      form.setValue('name', channel.name)
+      form.setValue('type', channel.type)
     }
-  }, [channelType, form])
+  }, [channel, form])
 
   const isLoading = form.formState.isLoading
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    setLoading(true)
     try {
       const url = qs.stringifyUrl({
-        url: `/api/channels`,
+        url: `/api/channels/${channel?.id}`,
         query: {
-          serverID: params.serverID
+          serverID: server?.id
         }
       })
-      await axios.post(url, values)
+      await axios.patch(url, values)
 
       form.reset()
       router.refresh()
       onClose()
     } catch (error) {
       console.log(error)
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -92,16 +88,12 @@ const CreateChannelModal = () => {
     onClose()
   }
   return (
-    <Dialog
-      open={isOpen && type === 'create-channel'}
-      onOpenChange={handleClose}
-    >
+    <Dialog open={isOpen && type === 'edit-channel'} onOpenChange={handleClose}>
       <DialogContent className="bg-white text-black sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle className="text-left">Create a new channel</DialogTitle>
-          <DialogDescription className="text-left">
-            New channel help you chat with a specific team or squad
-          </DialogDescription>
+          <DialogTitle className="flex gap-x-2 text-left">
+            Update <p className="text-emerald-600">#{channel?.name}</p>
+          </DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -171,11 +163,11 @@ const CreateChannelModal = () => {
             <DialogFooter className="w-full">
               <Button
                 className="w-full"
-                disabled={isLoading || loading}
+                disabled={isLoading}
                 variant="green"
                 type="submit"
               >
-                Create channels
+                Update channel
               </Button>
             </DialogFooter>
           </form>
@@ -185,4 +177,4 @@ const CreateChannelModal = () => {
   )
 }
 
-export default CreateChannelModal
+export default UpdateChannelModal

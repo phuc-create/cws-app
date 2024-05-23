@@ -13,20 +13,27 @@ import {
 import axios from 'axios'
 import { useModal } from '../../hooks/use-modal-store'
 import { useRouter } from 'next/navigation'
+import qs from 'query-string'
 
-const DeleteServerModal = () => {
+const DeleteChannelModal = () => {
   const { isOpen, onClose, type, data } = useModal()
-  const { server } = data
+  const { server, channel } = data
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
 
-  const onConfirmLeaveServer = async () => {
+  const onConfirmDeleteChannel = async () => {
     try {
       setIsLoading(true)
-      await axios.delete(`/api/servers/${server?.id}`)
+      const url = qs.stringifyUrl({
+        url: `/api/channels/${channel?.id}`,
+        query: {
+          serverID: server?.id
+        }
+      })
+      await axios.delete(url)
       onClose()
+      router.push(`/servers/${server?.id}`)
       router.refresh()
-      router.push('/')
     } catch (error) {
       console.log(error)
     } finally {
@@ -35,15 +42,18 @@ const DeleteServerModal = () => {
   }
 
   return (
-    <Dialog open={isOpen && type === 'delete-server'} onOpenChange={onClose}>
+    <Dialog open={isOpen && type === 'delete-channel'} onOpenChange={onClose}>
       <DialogContent className="bg-white text-black">
-        <DialogHeader>
-          <DialogTitle className="text-left">DELETE SERVER!</DialogTitle>
+        <>
+          <DialogTitle className="text-left">DELETE CHANNEL!</DialogTitle>
           <DialogDescription className="text-left">
-            Are you sure that you want to delete server{' '}
-            <span className="font-semibold text-rose-600">{server?.name}</span>?
+            Are you sure that you want to delete channel <br />
+            <span className="font-semibold text-rose-600">
+              #{channel?.name.split(' ').join('-')}
+            </span>
+            ?
           </DialogDescription>
-        </DialogHeader>
+        </>
         <DialogFooter className="flex w-full items-center justify-between bg-gray-200 px-6 py-4">
           <Button disabled={isLoading} variant={'ghost'} onClick={onClose}>
             Cancel
@@ -51,7 +61,7 @@ const DeleteServerModal = () => {
           <Button
             disabled={isLoading}
             variant={'green'}
-            onClick={onConfirmLeaveServer}
+            onClick={onConfirmDeleteChannel}
           >
             Confirm
           </Button>
@@ -61,4 +71,4 @@ const DeleteServerModal = () => {
   )
 }
 
-export default DeleteServerModal
+export default DeleteChannelModal
