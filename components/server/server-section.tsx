@@ -10,7 +10,7 @@ interface ServerSectionProps {
   label: string
   role?: MEMBER_ROLE
   sectionType: 'channel' | 'member'
-  channelType: CHANNEL_TYPE
+  channelType?: CHANNEL_TYPE
   server?: ServerWithMemberWithProfile
 }
 const ServerSection: React.FC<ServerSectionProps> = ({
@@ -29,7 +29,7 @@ const ServerSection: React.FC<ServerSectionProps> = ({
       {role !== 'GUEST' && sectionType === 'channel' && (
         <ActionTooltip label="Create Channel" side="top" align={'center'}>
           <button
-            onClick={() => onOpen('create-channel')}
+            onClick={() => onOpen('create-channel', { channelType })}
             className="text-zinc-500 transition 
             hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300"
           >
@@ -38,7 +38,7 @@ const ServerSection: React.FC<ServerSectionProps> = ({
         </ActionTooltip>
       )}
       {role === 'ADMIN' && sectionType === 'member' && (
-        <ActionTooltip label="Create Channel" side="top" align={'center'}>
+        <ActionTooltip label="Manage Mebmbers" side="top" align={'center'}>
           <button
             onClick={() => onOpen('members')}
             className="text-zinc-500 transition hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300"
