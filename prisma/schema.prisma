@@ -68,8 +68,14 @@ model member_tbl {
   serverID String
   server   server_tbl @relation(fields: [serverID], references: [id], onDelete: Cascade)
 
+  conversationInitiated conversation_tbl[] @relation("memberOne")
+  conversationReceived  conversation_tbl[] @relation("memberTwo")
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  messages           message_tbl[]
+  direct_message_tbl direct_message_tbl[]
 
   @@index([profileID])
   @@index([serverID])
@@ -95,10 +101,72 @@ model channel_tbl {
   serverID String
   server   server_tbl @relation(fields: [serverID], references: [id], onDelete: Cascade)
 
+  messages message_tbl[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([profileID])
   @@index([serverID])
+  @@schema("public")
+}
+
+model message_tbl {
+  id      String @id @default(uuid())
+  content String @db.Text
+
+  fileURL String? @db.Text
+
+  memberID String
+  member   member_tbl @relation(fields: [memberID], references: [id], onDelete: Cascade)
+
+  channelID String
+  channel   channel_tbl @relation(fields: [channelID], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  deleted Boolean @default(false)
+
+  @@index([channelID])
+  @@index([memberID])
+  @@schema("public")
+}
+
+model conversation_tbl {
+  id String @id @default(uuid())
+
+  memberOneID String
+  memberOne   member_tbl @relation("memberOne", fields: [memberOneID], references: [id], onDelete: Cascade)
+
+  memberTwoID    String
+  memberTwo      member_tbl           @relation("memberTwo", fields: [memberTwoID], references: [id], onDelete: Cascade)
+  direct_message direct_message_tbl[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([memberOneID, memberTwoID])
+  @@schema("public")
+}
+
+model direct_message_tbl {
+  id      String  @id @default(uuid())
+  content String  @db.Text
+  fileURL String? @db.Text
+
+  memberID String
+  member   member_tbl @relation(fields: [memberID], references: [id], onDelete: Cascade)
+
+  conversationID String
+  conversation   conversation_tbl @relation(fields: [conversationID], references: [id], onDelete: Cascade)
+
+  deleted Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([memberID])
+  @@index([conversationID])
   @@schema("public")
 }

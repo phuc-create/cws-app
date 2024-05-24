@@ -1,12 +1,9 @@
-import { Button } from "../components/ui/button"
-import { UserButton } from "@clerk/nextjs"
-import { ModeToggle } from "../components/mode-toggle"
-import { initialProfile } from "../lib/initial-profile"
-import { db } from "../lib/db"
-import { redirect } from "next/navigation"
-import CreateServerModal from "../components/modals/create-server-modal"
-import OpenCreateServer from "./_components/open-create-server"
-import NavigationSidebar from "../components/navigation/navigation-sidebar"
+import { initialProfile } from '../lib/initial-profile'
+import { db } from '../lib/db'
+import { redirect } from 'next/navigation'
+import CreateServerModal from '../components/modals/create-server-modal'
+import OpenCreateServer from './_components/open-create-server'
+import NavigationSidebar from '../components/navigation/navigation-sidebar'
 
 export default async function Home() {
   const profile = await initialProfile()
@@ -26,11 +23,10 @@ export default async function Home() {
 
   return (
     <div className="h-full">
-      <div className="hidden md:flex h-full w-[72px] z-30 flex-col fixed inset-y-0">
+      <div className="fixed inset-y-0 z-30 hidden h-full w-[72px] flex-col md:flex">
         <NavigationSidebar />
       </div>
-      <main className="md:pl-[72px] h-full">
-
+      <main className="h-full md:pl-[72px]">
         <OpenCreateServer />
         <CreateServerModal />
       </main>

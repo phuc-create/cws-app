@@ -1,10 +1,8 @@
-"use client"
+'use client'
 import React from 'react'
 
 const ServerActions = () => {
-  return (
-    <div>ServerActions</div>
-  )
+  return <div>ServerActions</div>
 }
 
 export default ServerActions
