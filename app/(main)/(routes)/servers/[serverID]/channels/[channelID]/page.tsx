@@ -1,9 +1,10 @@
 import React from 'react'
-import { currentProfile } from '../../../../../../../lib/current-profile'
+import { currentProfile } from '@/lib/current-profile'
 import { auth } from '@clerk/nextjs/server'
-import { db } from '../../../../../../../lib/db'
+import { db } from '@/lib/db'
 import { redirect } from 'next/navigation'
-import ChatHeader from '../../../../../../../components/chat/chat-header'
+import ChatHeader from '@/components/chat/chat-header'
+import ChatInput from '@/components/chat/chat-input'
 
 interface ChannelPageProps {
   params: {
@@ -41,6 +42,16 @@ const ChannelPage = async ({ params }: ChannelPageProps) => {
         name={channel.name}
         imageURL={server?.imageUrl}
         type="channel"
+      />
+      <div className="flex-1">future messages</div>
+      <ChatInput
+        apiURL={'/api/socket/messages'}
+        query={{
+          serverID: server?.id,
+          channelID: channel.id
+        }}
+        name={channel.name}
+        type={'channel'}
       />
     </div>
   )
