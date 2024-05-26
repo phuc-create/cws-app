@@ -5,6 +5,7 @@ import { db } from '@/lib/db'
 import { redirect } from 'next/navigation'
 import ChatHeader from '@/components/chat/chat-header'
 import ChatInput from '@/components/chat/chat-input'
+import ChatMessages from '../../../../../../../components/chat/chat-messages'
 
 interface ChannelPageProps {
   params: {
@@ -32,7 +33,7 @@ const ChannelPage = async ({ params }: ChannelPageProps) => {
       profileID: profile.id
     }
   })
-  if (!channel || !member) {
+  if (!channel || !member || !server) {
     return redirect('/')
   }
   return (
@@ -43,7 +44,20 @@ const ChannelPage = async ({ params }: ChannelPageProps) => {
         imageURL={server?.imageUrl}
         type="channel"
       />
-      <div className="flex-1">future messages</div>
+      <ChatMessages
+        name={channel.name}
+        member={member}
+        chatID={channel.id}
+        apiURL={'/api/messages'}
+        socketURL={'api/socket/messages'}
+        socketQuery={{
+          channelID: channel.id,
+          serverID: channel.serverID
+        }}
+        paramKey={'channelID'}
+        paramValue={channel.id}
+        type={'channel'}
+      />
       <ChatInput
         apiURL={'/api/socket/messages'}
         query={{

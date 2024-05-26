@@ -1,7 +1,7 @@
-import { NextResponse } from "next/server"
-import { currentProfile } from "../../../lib/current-profile"
-import { db } from "../../../lib/db"
-import { MEMBER_ROLE } from "@prisma/client"
+import { NextResponse } from 'next/server'
+import { currentProfile } from '../../../lib/current-profile'
+import { db } from '../../../lib/db'
+import { MEMBER_ROLE } from '@prisma/client'
 
 export const POST = async (req: Request) => {
   try {
@@ -9,7 +9,7 @@ export const POST = async (req: Request) => {
     const profile = await currentProfile()
 
     if (!profile) {
-      return new NextResponse("Unauthorized", { status: 401 })
+      return new NextResponse('Unauthorized', { status: 401 })
     }
     const server = await db.server_tbl.create({
       data: {
@@ -20,20 +20,18 @@ export const POST = async (req: Request) => {
         channels: {
           create: [
             {
-              name: "general",
+              name: 'general',
               profileID: profile.id
             }
           ]
         },
         members: {
-          create: [
-            { profileID: profile.id, role: MEMBER_ROLE.ADMIN }
-          ]
+          create: [{ profileID: profile.id, role: MEMBER_ROLE.ADMIN }]
         }
       }
     })
     return NextResponse.json(server)
   } catch (error) {
-    return new NextResponse("Error: " + error, { status: 400 })
+    return new NextResponse('Error: ' + error, { status: 400 })
   }
 }
