@@ -13,6 +13,7 @@ export type ModalType =
   | 'delete-server'
   | 'invite'
   | 'message-file'
+  | 'message-delete'
   | null
 interface ModalData {
   server?: ServerWithMemberWithProfile
