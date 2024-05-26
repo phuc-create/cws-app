@@ -111,8 +111,9 @@ export default async function handler(
       })
     }
     const updateKey = `chat:${channelID}:messages:update`
-    console.log(updateKey)
-    res.socket.server.io.emit(updateKey, message)
+    console.log('server update socket check: ', res?.socket?.server?.io)
+    res?.socket?.server?.io?.emit(updateKey, message)
+    // res.end()
     return res.status(200).json(message)
   } catch (error) {
     console.log(error)

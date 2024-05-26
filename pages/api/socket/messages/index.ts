@@ -1,7 +1,7 @@
 import { NextApiRequest } from 'next'
-import { NextAPIServerResponseIO } from '../../../types'
-import { currentProfile } from '../../../lib/current-profile-pages'
-import { db } from '../../../lib/db'
+import { NextAPIServerResponseIO } from '../../../../types'
+import { currentProfile } from '../../../../lib/current-profile-pages'
+import { db } from '../../../../lib/db'
 
 export default async function handler(
   req: NextApiRequest,

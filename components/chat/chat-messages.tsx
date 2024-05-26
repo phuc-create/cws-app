@@ -40,11 +40,11 @@ const ChatMessages = ({
   const queryKey = `chat:${chatID}`
   const addKey = `chat:${chatID}:messages`
   const updateKey = `chat:${chatID}:messages:update `
-  console.log(updateKey)
+
   const { data, fetchNextPage, hasNextPage, status, isFetchingNextPage } =
     useChatQuery({ apiURL, paramKey, paramValue, queryKey })
 
-  useChatSocket({ queryKey, addKey, updateKey })
+  useChatSocket({ queryKey, updateKey, addKey })
   if (status === 'pending') {
     return (
       <div className="flex flex-1 flex-col items-center justify-center">
