@@ -42,7 +42,7 @@ const ServerChannel: React.FC<ServerChannelProps> = ({
       onClick={onMoveToChannel}
       className={cn(
         'group mb-1 flex w-full items-center gap-x-2 rounded-md px-2 py-2 transition hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50',
-        params.channelID === channel.id &&
+        params?.channelID === channel.id &&
         'bg-zinc-700/20 text-emerald-500 dark:bg-zinc-700 dark:text-primary'
       )}
     >
@@ -55,7 +55,7 @@ const ServerChannel: React.FC<ServerChannelProps> = ({
         <p
           className={cn(
             'line-clamp-1 w-24 text-ellipsis text-left text-sm font-semibold text-zinc-500 transition group-hover:text-zinc-600 dark:text-zinc-300 dark:group-hover:text-zinc-300',
-            params.channelID === channel.id
+            params?.channelID === channel.id
               ? 'text-emerald-500 dark:text-white'
               : ''
           )}

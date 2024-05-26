@@ -12,11 +12,14 @@ export type ModalType =
   | 'leave-server'
   | 'delete-server'
   | 'invite'
+  | 'message-file'
   | null
 interface ModalData {
   server?: ServerWithMemberWithProfile
   channel?: channel_tbl
   channelType?: CHANNEL_TYPE
+  apiURL?: string
+  query?: Record<string, any>
 }
 export type ModalStore = {
   type: ModalType

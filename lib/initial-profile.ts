@@ -1,6 +1,5 @@
-import { auth, currentUser } from "@clerk/nextjs/server"
-import { db } from "./db"
-
+import { auth, currentUser } from '@clerk/nextjs/server'
+import { db } from './db'
 
 export const initialProfile = async () => {
   const user = await currentUser()
@@ -19,10 +18,9 @@ export const initialProfile = async () => {
   const newProfile = await db.profile_tbl.create({
     data: {
       userID: user.id,
-      name: user.firstName + " " + user.lastName,
+      name: user.firstName + ' ' + user.lastName,
       imageUrl: user.imageUrl,
       email: user.emailAddresses[0].emailAddress
-
     }
   })
 
