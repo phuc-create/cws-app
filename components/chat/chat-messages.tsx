@@ -8,6 +8,7 @@ import { useChatQuery } from '../../hooks/use-chat-query'
 import { Loader2, ServerCrash } from 'lucide-react'
 import ChatItem from './chat-item'
 import { ScrollArea } from '../ui/scroll-area'
+import { useChatSocket } from '../../hooks/use-chat-socket'
 
 interface ChatMessagesProps {
   name: string
@@ -37,8 +38,13 @@ const ChatMessages = ({
   type
 }: ChatMessagesProps) => {
   const queryKey = `chat:${chatID}`
+  const addKey = `chat:${chatID}:messages`
+  const updateKey = `chat:${chatID}:messages:update `
+  console.log(updateKey)
   const { data, fetchNextPage, hasNextPage, status, isFetchingNextPage } =
     useChatQuery({ apiURL, paramKey, paramValue, queryKey })
+
+  useChatSocket({ queryKey, addKey, updateKey })
   if (status === 'pending') {
     return (
       <div className="flex flex-1 flex-col items-center justify-center">
