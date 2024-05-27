@@ -38,7 +38,7 @@ const ChatMessages = ({
 }: ChatMessagesProps) => {
   const queryKey = `chat:${chatID}`
   const addKey = `chat:${chatID}:messages`
-  const updateKey = `chat:${chatID}:messages:update `
+  const updateKey = `chat:${chatID}:messages:update`
 
   const messageViewRef = useRef<HTMLDivElement>(null)
 
