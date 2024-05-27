@@ -23,7 +23,7 @@ const MemberConversationPage = async ({
   }
   const currentMember = await db.member_tbl.findFirst({
     where: {
-      serverID: params.serverID,
+      serverID: params?.serverID,
       profileID: profile.id
     },
     include: {
@@ -37,10 +37,10 @@ const MemberConversationPage = async ({
 
   const conversation = await getOrCreateConvesation(
     currentMember.id,
-    params.memberID
+    params?.memberID
   )
   if (!conversation) {
-    return redirect(`/servers/${params.serverID}`)
+    return redirect(`/servers/${params?.serverID}`)
   }
 
   const { memberOne, memberTwo } = conversation

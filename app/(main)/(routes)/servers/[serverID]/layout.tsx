@@ -24,7 +24,7 @@ export default async function ServerIDLayout({
 
   const server = await db.server_tbl.findUnique({
     where: {
-      id: params.serverID,
+      id: params?.serverID,
       members: {
         some: {
           profileID: profile.id

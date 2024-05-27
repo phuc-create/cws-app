@@ -15,7 +15,7 @@ const ServerPage: React.FC<ServerPageProps> = async ({ params }) => {
   }
   const server = await db.server_tbl.findUnique({
     where: {
-      id: params.serverID,
+      id: params?.serverID,
       members: {
         some: {
           profileID: profile.id

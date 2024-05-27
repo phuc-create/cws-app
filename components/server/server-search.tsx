@@ -58,10 +58,10 @@ const ServerSearch: React.FC<ServerSearchProps> = ({ data }) => {
     type: 'channel' | 'member'
   }) => {
     if (type === 'channel') {
-      return router.push(`/servers/${params.serverID}/channels/${id}`)
+      return router.push(`/servers/${params?.serverID}/channels/${id}`)
     }
     if (type === 'member') {
-      return router.push(`/servers/${params.serverID}/conversations/${id}`)
+      return router.push(`/servers/${params?.serverID}/conversations/${id}`)
     }
   }
   return (

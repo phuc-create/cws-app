@@ -18,7 +18,7 @@ export const PATCH = async (
     if (!serverID) {
       return new NextResponse('Missing Server ID', { status: 400 })
     }
-    if (!params.channelID) {
+    if (!params?.channelID) {
       return new NextResponse('Missing Member ID', { status: 400 })
     }
     const server = await db.server_tbl.update({
@@ -37,7 +37,7 @@ export const PATCH = async (
         channels: {
           update: {
             where: {
-              id: params.channelID,
+              id: params?.channelID,
               name: {
                 not: 'general'
               }
@@ -71,7 +71,7 @@ export const DELETE = async (
     if (!serverID) {
       return new NextResponse('Missing Server ID', { status: 400 })
     }
-    if (!params.channelID) {
+    if (!params?.channelID) {
       return new NextResponse('Missing Member ID', { status: 400 })
     }
     const server = await db.server_tbl.update({
@@ -89,7 +89,7 @@ export const DELETE = async (
       data: {
         channels: {
           delete: {
-            id: params.channelID,
+            id: params?.channelID,
             name: {
               not: 'general'
             }

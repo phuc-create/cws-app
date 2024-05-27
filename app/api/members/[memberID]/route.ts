@@ -17,7 +17,7 @@ export const PATCH = async (
     if (!serverID) {
       return new NextResponse('Missing Server ID', { status: 400 })
     }
-    if (!params.memberID) {
+    if (!params?.memberID) {
       return new NextResponse('Missing Member ID', { status: 400 })
     }
     const server = await db.server_tbl.update({
@@ -29,7 +29,7 @@ export const PATCH = async (
         members: {
           update: {
             where: {
-              id: params.memberID,
+              id: params?.memberID,
               profileID: {
                 not: profile.id
               }
@@ -70,7 +70,7 @@ export const DELETE = async (
     if (!serverID) {
       return new NextResponse('Missing Server ID', { status: 400 })
     }
-    if (!params.memberID) {
+    if (!params?.memberID) {
       return new NextResponse('Missing Member ID', { status: 400 })
     }
     const server = await db.server_tbl.update({
@@ -81,7 +81,7 @@ export const DELETE = async (
       data: {
         members: {
           deleteMany: {
-            id: params.memberID,
+            id: params?.memberID,
             profileID: {
               not: profile.id
             }

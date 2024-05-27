@@ -14,11 +14,11 @@ const InviteCodePage: React.FC<InviteCodePageProps> = async ({ params }) => {
   const profile = await currentProfile()
   if (!profile) return auth().redirectToSignIn()
 
-  if (!params.inviteCode) redirect("/")
+  if (!params?.inviteCode) redirect('/')
 
   const existingServer = await db.server_tbl.findFirst({
     where: {
-      inviteCode: params.inviteCode,
+      inviteCode: params?.inviteCode,
       members: {
         some: {
           profileID: profile.id
@@ -31,7 +31,7 @@ const InviteCodePage: React.FC<InviteCodePageProps> = async ({ params }) => {
 
   const server = await db.server_tbl.update({
     where: {
-      inviteCode: params.inviteCode
+      inviteCode: params?.inviteCode
     },
     data: {
       members: {
@@ -40,8 +40,7 @@ const InviteCodePage: React.FC<InviteCodePageProps> = async ({ params }) => {
             profileID: profile.id
           }
         ]
-      },
-
+      }
     }
   })
 

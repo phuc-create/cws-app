@@ -18,18 +18,18 @@ const ChannelPage = async ({ params }: ChannelPageProps) => {
   if (!profile) return auth().redirectToSignIn()
   const channel = await db.channel_tbl.findUnique({
     where: {
-      id: params.channelID
+      id: params?.channelID
     }
   })
 
   const server = await db.server_tbl.findUnique({
     where: {
-      id: params.serverID
+      id: params?.serverID
     }
   })
   const member = await db.member_tbl.findFirst({
     where: {
-      serverID: params.serverID,
+      serverID: params?.serverID,
       profileID: profile.id
     }
   })
