@@ -141,6 +141,7 @@ const ChatItem = ({
                 src={fileURL}
                 alt={content}
                 fill
+                sizes="300"
                 className="object-cover"
               />
             </a>

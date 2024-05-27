@@ -45,6 +45,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
           fill
           src={value}
           alt="Upload"
+          sizes="300"
           className="rounded-full object-cover"
         />
         <button
