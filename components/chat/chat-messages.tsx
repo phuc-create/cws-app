@@ -1,13 +1,12 @@
 'use client'
 
 import { member_tbl, message_tbl, profile_tbl } from '@prisma/client'
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect, useRef } from 'react'
 import { format } from 'date-fns'
 import ChatWelcome from './chat-welcome'
 import { useChatQuery } from '../../hooks/use-chat-query'
 import { Loader2, ServerCrash } from 'lucide-react'
 import ChatItem from './chat-item'
-import { ScrollArea } from '../ui/scroll-area'
 import { useChatSocket } from '../../hooks/use-chat-socket'
 
 interface ChatMessagesProps {
@@ -41,10 +40,20 @@ const ChatMessages = ({
   const addKey = `chat:${chatID}:messages`
   const updateKey = `chat:${chatID}:messages:update `
 
+  const messageViewRef = useRef<HTMLDivElement>(null)
+
   const { data, fetchNextPage, hasNextPage, status, isFetchingNextPage } =
     useChatQuery({ apiURL, paramKey, paramValue, queryKey })
 
   useChatSocket({ queryKey, updateKey, addKey })
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [data])
+
+  const scrollToBottom = () => {
+    messageViewRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }
   if (status === 'pending') {
     return (
       <div className="flex flex-1 flex-col items-center justify-center">
@@ -95,6 +104,7 @@ const ChatMessages = ({
           )
         })}
       </div>
+      <div ref={messageViewRef}></div>
     </div>
   )
 }
