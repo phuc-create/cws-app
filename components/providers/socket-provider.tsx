@@ -1,5 +1,5 @@
 'use client'
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useRef, useState } from 'react'
 import { Socket, io as IOClient } from 'socket.io-client'
 
 interface SocketContextProps {
@@ -13,7 +13,7 @@ const SocketContext = createContext<SocketContextProps>({
 })
 
 const SocketContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [socket, setSocket] = useState<Socket>()
+  const socket = useRef<Socket | null>(null)
   const [isConnected, setIsConnected] = useState(false)
 
   useEffect(() => {
@@ -29,10 +29,10 @@ const SocketContextProvider = ({ children }: { children: React.ReactNode }) => {
     socketInstance.on('disconnect', () => {
       setIsConnected(false)
     })
-    setSocket(socketInstance)
+    socket.current = socketInstance
   }, [])
   return (
-    <SocketContext.Provider value={{ socket, isConnected }}>
+    <SocketContext.Provider value={{ socket: socket.current, isConnected }}>
       {children}
     </SocketContext.Provider>
   )
